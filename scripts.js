@@ -14,7 +14,13 @@
  * @returns {string} Upprunalegi strengurinn hliðraður um n til hægri
  */
 function encode(str, n, alphabet = '') {
-  return '';
+  const upper = str.toLocaleUpperCase();
+
+  let result = '';
+  for (let i = 0; i < str.length; i++) {
+    result += alphabet[(alphabet.indexOf(upper[i]) + n) % alphabet.length];
+  }
+  return result;
 }
 
 /**
@@ -26,7 +32,13 @@ function encode(str, n, alphabet = '') {
  * @returns {string} Upprunalegi strengurinn hliðraður um n til vinstri
  */
 function decode(str, n, alphabet = '') {
-  return '';
+  return str
+    .toLocaleUpperCase()
+    .split('')
+    .map(s => alphabet.indexOf(s) - n) // hliðruð staðsetning stafs
+    .map(i => i < 0 ? alphabet.length + i : i) // ef i verður neikvætt, förum aftast í stafróf
+    .map(i => alphabet[i])
+    .join('');
 }
 
 const Caesar = (() => {
@@ -35,6 +47,8 @@ const Caesar = (() => {
 
   // Default type, uppfært af radio input
   let type = 'encode';
+
+  /*holy shit ég skil ekkert í þessu, Þarf að byrja fyrr til að fá aðstoð í dæmatíma*/
 
   // Default hliðrun, uppfært af "shift"
   let shift = 3;
